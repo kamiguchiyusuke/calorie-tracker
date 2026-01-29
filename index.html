@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>カロリー記録</title>
+
+  <!-- バナー縮小対応のスタイル -->
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      position: absolute;
+      transform-origin: top left;
+    }
+  </style>
+
+  <!-- バナー縮小対応のスクリプト -->
+  <script>
+    window.onload = function(){
+      // バナーを0.4倍に縮小しているので、bodyを2.5倍(1/0.4)に拡大
+      var scale = 1 / 0.4;
+      document.body.style.width = 100/scale+"%";
+      document.body.style.height = 100/scale+"%";
+      document.body.style.transform = "scale("+scale+")";
+    };
+
+    // 画面回転時にも対応
+    window.onresize = function(){
+      var scale = 1 / 0.4;
+      document.body.style.width = 100/scale+"%";
+      document.body.style.height = 100/scale+"%";
+      document.body.style.transform = "scale("+scale+")";
+    };
+  </script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 24px;
+      font-size: 32px;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 16px;
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+      font-weight: 600;
+      font-size: 17px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 16px 18px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 18px;
+      transition: border-color 0.3s;
+      background: #fafafa;
+    }
+
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #667eea;
+      background: white;
+    }
+
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 18px center;
+      padding-right: 45px;
+      cursor: pointer;
+    }
+
+    /* iOS用の入力フィールド調整 */
+    input[type="number"] {
+      -webkit-appearance: none;
+      -moz-appearance: textfield;
+      appearance: none;
+    }
+
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      margin-bottom: 10px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .secondary-button {
+      background: white;
+      color: #667eea;
+      border: 3px solid #667eea;
+      margin-top: 0;
+    }
+
+    .secondary-button:active {
+      background: #f8f9ff;
+    }
+
+    .standalone-button {
+      max-width: 600px;
+      margin: 0 auto 10px auto;
+      display: block;
+    }
+
+    .message {
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin-bottom: 28px;
+      display: none;
+      animation: slideIn 0.3s ease;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+    }
+
+    .message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #f5c6cb;
+    }
+
+    /* グラフ用スタイル */
+    .chart-container {
+      margin-top: 20px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 10px;
+    }
+
+    .chart-wrapper {
+      min-width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      height: 320px;
+      padding: 70px 10px 10px 10px;
+      gap: 10px;
+      position: relative;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .bar-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      min-width: 50px;
+      max-width: 80px;
+      position: relative;
+    }
+
+    .bar-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .bar-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 8px;
+      white-space: nowrap;
+      min-height: 20px;
+    }
+
+    .bar {
+      width: 100%;
+      min-height: 10px;
+      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      border-radius: 8px 8px 0 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
+
+    .bar-label {
+      margin-top: 12px;
+      font-size: 16px;
+      color: #666;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #999;
+      padding: 60px 20px;
+      font-size: 18px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #667eea;
+      padding: 60px 20px;
+      font-size: 18px;
+    }
+
+    /* お気に入り管理用スタイル */
+    .favorite-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: #f8f9ff;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .favorite-info {
+      flex: 1;
+    }
+
+    .favorite-name {
+      font-weight: 600;
+      font-size: 17px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .favorite-details {
+      font-size: 15px;
+      color: #666;
+    }
+
+    .delete-btn {
+      padding: 8px 16px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 0;
+      width: auto;
+    }
+
+    .delete-btn:active {
+      background: #c82333;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      padding: 12px;
+      background: #f8f9ff;
+      border-radius: 10px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .loader {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* プレースホルダーのスタイル */
+    ::placeholder {
+      color: #999;
+      font-size: 18px;
+    }
+
+    /* タッチデバイス用の調整 */
+    @media (hover: none) and (pointer: coarse) {
+      button:hover {
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>🍽️ カロリー記録</h1>
+
+      <div id="message" class="message"></div>
+
+      <form id="calorieForm">
+        <!-- お気に入りから選択 -->
+        <div class="form-group">
+          <label for="favoriteSelect">⭐ お気に入りから選択</label>
+          <select id="favoriteSelect">
+            <option value="">-- 選択してください --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="food">食べ物</label>
+          <input
+            type="text"
+            id="food"
+            name="food"
+            placeholder="例: じゃがいも"
+            required
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off">
+        </div>
+
+        <div class="form-group">
+          <label for="weight">重さ (g)</label>
+          <input
+            type="number"
+            id="weight"
+            name="weight"
+            placeholder="例: 100"
+            required
+            min="0"
+            step="0.1"
+            inputmode="decimal">
+        </div>
+
+        <div class="form-group">
+          <label for="calories">摂取カロリー (kcal)</label>
+          <input
+            type="number"
+            id="calories"
+            name="calories"
+            placeholder="例: 250"
+            required
+            min="0"
+            step="1"
+            inputmode="numeric">
+        </div>
+
+        <!-- お気に入りに追加チェックボックス -->
+        <div class="checkbox-group">
+          <input type="checkbox" id="addToFavorite">
+          <label for="addToFavorite">この食べ物をお気に入りに追加</label>
+        </div>
+
+        <button type="submit" id="submitBtn">
+          <span id="btnText">記録する</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- グラフカード -->
+    <div class="card">
+      <h2>📈 今月のカロリー推移(kcal)</h2>
+      <div id="chartContainer" class="chart-container">
+        <div class="loading">読み込み中...</div>
+      </div>
+    </div>
+
+    <!-- お気に入り管理カード -->
+    <div class="card">
+      <h2>⭐ お気に入り管理</h2>
+      <div id="favoritesList">
+        <div class="loading">読み込み中...</div>
+      </div>
+    </div>
+
+    <!-- スプレッドシート確認ボタン（独立したセクション） -->
+    <button type="button" class="secondary-button standalone-button" id="viewSheetBtn">
+      📊 スプレッドシートを確認
+    </button>
+  </div>
+
+  <script>
+    const form = document.getElementById('calorieForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+    const messageDiv = document.getElementById('message');
+    const foodInput = document.getElementById('food');
+    const weightInput = document.getElementById('weight');
+    const caloriesInput = document.getElementById('calories');
+    const addToFavoriteCheckbox = document.getElementById('addToFavorite');
+    const favoriteSelect = document.getElementById('favoriteSelect');
+    const viewSheetBtn = document.getElementById('viewSheetBtn');
+    const chartContainer = document.getElementById('chartContainer');
+    const favoritesList = document.getElementById('favoritesList');
+
+    // お気に入り選択時の処理
+    favoriteSelect.addEventListener('change', (e) => {
+      const selectedValue = e.target.value;
+      if (selectedValue) {
+        const [food, weight, calories] = selectedValue.split('|');
+        foodInput.value = food;
+        weightInput.value = weight;
+        caloriesInput.value = calories;
+      }
+    });
+
+    // フォーム送信
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const food = foodInput.value.trim();
+      const weight = parseFloat(weightInput.value);
+      const calories = parseFloat(caloriesInput.value);
+      const shouldAddToFavorite = addToFavoriteCheckbox.checked;
+
+      if (!food || !weight || !calories) {
+        showMessage('入力内容を確認してください', 'error');
+        return;
+      }
+
+      // ボタンを無効化
+      submitBtn.disabled = true;
+      btnText.innerHTML = '<span class="loader"></span>';
+
+      try {
+        // GASの関数を呼び出し
+        google.script.run
+          .withSuccessHandler(onSuccess)
+          .withFailureHandler(onFailure)
+          .addCalorieRecord(food, weight, calories, shouldAddToFavorite);
+      } catch (error) {
+        onFailure(error);
+      }
+    });
+
+    // スプレッドシートを開く
+    viewSheetBtn.addEventListener('click', () => {
+      google.script.run
+        .withSuccessHandler((result) => {
+          if (result.success) {
+            window.open(result.url, '_blank');
+          } else {
+            showMessage(result.message, 'error');
+          }
+        })
+        .withFailureHandler((error) => {
+          showMessage('エラーが発生しました: ' + error.message, 'error');
+        })
+        .getSpreadsheetUrl();
+    });
+
+    function onSuccess(result) {
+      submitBtn.disabled = false;
+      btnText.textContent = '記録する';
+
+      if (result.success) {
+        showMessage(result.message, 'success');
+        // フォームをリセット
+        form.reset();
+        if (window.innerWidth > 768) {
+          foodInput.focus();
+        }
+        // グラフとお気に入りを更新
+        loadChart();
+        loadFavorites();
+      } else {
+        showMessage(result.message, 'error');
+      }
+    }
+
+    function onFailure(error) {
+      submitBtn.disabled = false;
+      btnText.textContent = '記録する';
+      showMessage('エラーが発生しました: ' + error.message, 'error');
+    }
+
+    function showMessage(text, type) {
+      messageDiv.textContent = text;
+      messageDiv.className = 'message ' + type;
+      messageDiv.style.display = 'block';
+
+      setTimeout(() => {
+        messageDiv.style.display = 'none';
+      }, 3000);
+    }
+
+    // グラフを読み込む
+    function loadChart() {
+      chartContainer.innerHTML = '<div class="loading">読み込み中...</div>';
+
+      google.script.run
+        .withSuccessHandler(displayChart)
+        .withFailureHandler((error) => {
+          console.error('Chart load error:', error);
+          chartContainer.innerHTML = '<div class="no-data">グラフの読み込みに失敗しました</div>';
+        })
+        .getMonthlyCalories();
+    }
+
+    // グラフを表示
+    function displayChart(result) {
+      if (!result.success || !result.data || result.data.length === 0) {
+        chartContainer.innerHTML = '<div class="no-data">まだデータがありません</div>';
+        return;
+      }
+
+      const data = result.data;
+      const maxCalories = Math.max(...data.map(d => d.calories));
+
+      if (maxCalories === 0) {
+        chartContainer.innerHTML = '<div class="no-data">カロリーデータがありません</div>';
+        return;
+      }
+
+      let chartHTML = '<div class="chart-wrapper"><div class="chart">';
+
+      data.forEach(item => {
+        const date = new Date(item.date);
+        const day = date.getDate();
+        const heightPx = Math.max(20, (item.calories / maxCalories) * 160);
+
+        chartHTML += `
+          <div class="bar-container">
+            <div class="bar-wrapper">
+              <div class="bar-value">${item.calories}</div>
+              <div class="bar" style="height: ${heightPx}px;"></div>
+            </div>
+            <div class="bar-label">${day}日</div>
+          </div>
+        `;
+      });
+
+      chartHTML += '</div></div>';
+      chartContainer.innerHTML = chartHTML;
+    }
+
+    // お気に入りを読み込む
+    function loadFavorites() {
+      favoritesList.innerHTML = '<div class="loading">読み込み中...</div>';
+
+      google.script.run
+        .withSuccessHandler(displayFavorites)
+        .withFailureHandler((error) => {
+          console.error('Favorites load error:', error);
+          favoritesList.innerHTML = '<div class="no-data">お気に入りの読み込みに失敗しました</div>';
+        })
+        .getFavorites();
+    }
+
+    // お気に入りを表示
+    function displayFavorites(result) {
+      // ドロップダウンを更新
+      favoriteSelect.innerHTML = '<option value="">-- 選択してください --</option>';
+
+      if (!result.success || !result.data || result.data.length === 0) {
+        favoritesList.innerHTML = '<div class="no-data">お気に入りはまだありません</div>';
+        return;
+      }
+
+      const favorites = result.data;
+
+      // ドロップダウンに追加
+      favorites.forEach(fav => {
+        const option = document.createElement('option');
+        option.value = `${fav.food}|${fav.weight}|${fav.calories}`;
+        option.textContent = `${fav.food} (${fav.weight}g, ${fav.calories}kcal)`;
+        favoriteSelect.appendChild(option);
+      });
+
+      // お気に入りリストを表示
+      let listHTML = '';
+      favorites.forEach((fav, index) => {
+        listHTML += `
+          <div class="favorite-item">
+            <div class="favorite-info">
+              <div class="favorite-name">${fav.food}</div>
+              <div class="favorite-details">${fav.weight}g / ${fav.calories}kcal</div>
+            </div>
+            <button class="delete-btn" onclick="deleteFavorite(${index})">削除</button>
+          </div>
+        `;
+      });
+
+      favoritesList.innerHTML = listHTML;
+    }
+
+    // お気に入りを削除
+    function deleteFavorite(index) {
+      if (!confirm('このお気に入りを削除しますか?')) {
+        return;
+      }
+
+      google.script.run
+        .withSuccessHandler((result) => {
+          if (result.success) {
+            showMessage(result.message, 'success');
+            loadFavorites();
+          } else {
+            showMessage(result.message, 'error');
+          }
+        })
+        .withFailureHandler((error) => {
+          showMessage('エラーが発生しました: ' + error.message, 'error');
+        })
+        .removeFavorite(index);
+    }
+
+    // ページ読み込み時
+    window.addEventListener('load', () => {
+      // デスクトップのみ自動フォーカス
+      if (window.innerWidth > 768) {
+        foodInput.focus();
+      }
+
+      // グラフとお気に入りを読み込む
+      loadChart();
+      loadFavorites();
+    });
+  </script>
+</body>
+</html>
