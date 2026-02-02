@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <defs>
+    <style>
+      .title { font: bold 24px sans-serif; fill: #333; }
+      .label { font: 16px sans-serif; fill: #333; }
+      .small-label { font: 13px sans-serif; fill: #666; }
+      .box { fill: #fff; stroke: #333; stroke-width: 2; }
+      .client { fill: #e3f2fd; stroke: #1976d2; }
+      .server { fill: #fff3e0; stroke: #f57c00; }
+      .storage { fill: #e8f5e9; stroke: #388e3c; }
+      .arrow { fill: none; stroke: #666; stroke-width: 2; marker-end: url(#arrowhead); }
+      .arrow-label { font: 12px sans-serif; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666" />
+    </marker>
+  </defs>
+  
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" class="title">カロリー記録アプリ - システム構成</text>
+  
+  <!-- User -->
+  <g id="user">
+    <circle cx="400" cy="80" r="25" fill="#90caf9" stroke="#1976d2" stroke-width="2"/>
+    <text x="400" y="90" text-anchor="middle" font-size="28">👤</text>
+    <text x="400" y="130" text-anchor="middle" class="small-label">ユーザー</text>
+  </g>
+  
+  <!-- Client Side -->
+  <g id="client">
+    <rect x="100" y="170" width="200" height="120" rx="10" class="box client"/>
+    <text x="200" y="200" text-anchor="middle" class="label">📱 Webアプリ</text>
+    <text x="200" y="225" text-anchor="middle" class="small-label">HTML/CSS/JavaScript</text>
+    <text x="200" y="245" text-anchor="middle" class="small-label">・カロリー入力</text>
+    <text x="200" y="265" text-anchor="middle" class="small-label">・グラフ表示</text>
+  </g>
+  
+  <!-- Server Side -->
+  <g id="server">
+    <rect x="350" y="170" width="200" height="120" rx="10" class="box server"/>
+    <text x="450" y="200" text-anchor="middle" class="label">⚙️ GAS</text>
+    <text x="450" y="225" text-anchor="middle" class="small-label">Google Apps Script</text>
+    <text x="450" y="245" text-anchor="middle" class="small-label">・データ処理</text>
+    <text x="450" y="265" text-anchor="middle" class="small-label">・スプレッドシート操作</text>
+  </g>
+  
+  <!-- Storage -->
+  <g id="storage">
+    <rect x="600" y="170" width="150" height="120" rx="10" class="box storage"/>
+    <text x="675" y="200" text-anchor="middle" class="label">💾 データ</text>
+    <text x="675" y="225" text-anchor="middle" class="small-label">Googleスプレッドシート</text>
+    <text x="675" y="245" text-anchor="middle" class="small-label">・月別シート</text>
+    <text x="675" y="265" text-anchor="middle" class="small-label">・お気に入り</text>
+  </g>
+  
+  <!-- Arrows -->
+  <!-- User to Client -->
+  <path d="M 380 100 L 250 160" class="arrow"/>
+  <text x="310" y="125" class="arrow-label">アクセス</text>
+  
+  <!-- Client to Server -->
+  <path d="M 300 220 L 350 220" class="arrow"/>
+  <text x="325" y="215" text-anchor="middle" class="arrow-label">リクエスト</text>
+  
+  <path d="M 350 250 L 300 250" class="arrow"/>
+  <text x="325" y="270" text-anchor="middle" class="arrow-label">レスポンス</text>
+  
+  <!-- Server to Storage -->
+  <path d="M 550 220 L 600 220" class="arrow"/>
+  <text x="575" y="215" text-anchor="middle" class="arrow-label">読み書き</text>
+  
+  <path d="M 600 250 L 550 250" class="arrow"/>
+  
+  <!-- Flow Description -->
+  <g id="flow">
+    <text x="50" y="360" class="label" font-weight="bold">データフロー:</text>
+    <text x="50" y="385" class="small-label">① ユーザーがWebアプリにアクセス</text>
+    <text x="50" y="410" class="small-label">② カロリーデータを入力・記録</text>
+    <text x="50" y="435" class="small-label">③ GASがスプレッドシートに保存・読み取り</text>
+    
+    <text x="450" y="385" class="small-label">④ グラフやお気に入りデータを表示</text>
+    <text x="450" y="410" class="small-label">⚡ リアルタイムで同期・管理</text>
+  </g>
+</svg>
