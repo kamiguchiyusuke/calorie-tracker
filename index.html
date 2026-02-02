@@ -25,14 +25,12 @@
   <!-- バナー縮小対応のスクリプト -->
   <script>
     window.onload = function(){
-      // バナーを0.4倍に縮小しているので、bodyを2.5倍(1/0.4)に拡大
       var scale = 1 / 0.4;
       document.body.style.width = 100/scale+"%";
       document.body.style.height = 100/scale+"%";
       document.body.style.transform = "scale("+scale+")";
     };
 
-    // 画面回転時にも対応
     window.onresize = function(){
       var scale = 1 / 0.4;
       document.body.style.width = 100/scale+"%";
@@ -50,8 +48,9 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
+      background-attachment: fixed;
       min-height: 100vh;
       padding: 10px;
     }
@@ -63,68 +62,120 @@
 
     .card {
       background: white;
-      border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-      margin-bottom: 8px;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      margin-bottom: 12px;
+    }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      gap: 12px;
+    }
+
+    /* 左側のスペーサー（中央揃えのため） */
+    .header-spacer {
+      width: 32px; /* アイコンと同じ幅 */
     }
 
     h1 {
-      color: #333;
-      margin-bottom: 24px;
-      font-size: 32px;
+      color: #000;
+      font-size: 34px;
       text-align: center;
       font-weight: 700;
+      letter-spacing: -0.5px;
+      margin: 0;
+      flex: 1;
     }
 
     h2 {
-      color: #333;
+      color: #000;
       margin-bottom: 16px;
       font-size: 22px;
       font-weight: 700;
+      letter-spacing: -0.3px;
     }
 
     .form-group {
       margin-bottom: 20px;
     }
 
+    .input-with-ai {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-with-ai > div:first-child {
+      width: 100%;
+    }
+
+    .ai-button {
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
+      color: white;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+      width: 100%;
+      height: auto;
+    }
+
+    .ai-button:active {
+      opacity: 0.6;
+    }
+
     label {
       display: block;
       margin-bottom: 8px;
-      color: #444;
+      color: #000;
       font-weight: 600;
-      font-size: 17px;
+      font-size: 16px;
+      letter-spacing: 0.5px;
     }
 
     input[type="text"],
     input[type="number"],
-    select {
+    select,
+    textarea {
       width: 100%;
-      padding: 16px 18px;
-      border: 2px solid #e0e0e0;
-      border-radius: 12px;
-      font-size: 18px;
-      transition: border-color 0.3s;
-      background: #fafafa;
+      padding: 12px 16px;
+      border: 1px solid #e5e5ea;
+      border-radius: 10px;
+      font-size: 17px;
+      transition: border-color 0.2s;
+      background: white;
+      font-family: inherit;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
     }
 
     input:focus,
-    select:focus {
+    select:focus,
+    textarea:focus {
       outline: none;
-      border-color: #667eea;
-      background: white;
+      border-color: #007aff;
     }
 
     select {
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23007aff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 18px center;
-      padding-right: 45px;
+      background-position: right 16px center;
+      padding-right: 40px;
       cursor: pointer;
     }
 
-    /* iOS用の入力フィールド調整 */
     input[type="number"] {
       -webkit-appearance: none;
       -moz-appearance: textfield;
@@ -141,36 +192,36 @@
     button {
       width: 100%;
       padding: 16px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
       color: white;
       border: none;
-      border-radius: 12px;
-      font-size: 18px;
-      font-weight: 700;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      transition: opacity 0.2s;
       margin-bottom: 10px;
     }
 
     button:active {
-      transform: scale(0.98);
+      opacity: 0.6;
     }
 
     button:disabled {
-      opacity: 0.6;
+      opacity: 0.4;
       cursor: not-allowed;
-      transform: none;
     }
 
     .secondary-button {
       background: white;
-      color: #667eea;
-      border: 3px solid #667eea;
+      color: #007aff;
+      border: 1px solid #007aff;
       margin-top: 0;
     }
 
     .secondary-button:active {
-      background: #f8f9ff;
+      opacity: 0.6;
+      background: white;
     }
 
     .standalone-button {
@@ -180,28 +231,27 @@
     }
 
     .message {
-      padding: 18px 20px;
+      padding: 16px 20px;
       border-radius: 14px;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
       display: none;
       animation: slideIn 0.3s ease;
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 17px;
+      font-weight: 500;
     }
 
     .message.success {
-      background: #d4edda;
-      color: #155724;
-      border: 2px solid #c3e6cb;
+      background: #d1f2eb;
+      color: #0f5132;
+      border: 1px solid #a7e9d7;
     }
 
     .message.error {
       background: #f8d7da;
       color: #721c24;
-      border: 2px solid #f5c6cb;
+      border: 1px solid #f5c6cb;
     }
 
-    /* グラフ用スタイル */
     .chart-container {
       margin-top: 20px;
       overflow-x: auto;
@@ -223,7 +273,7 @@
       padding: 70px 10px 10px 10px;
       gap: 10px;
       position: relative;
-      border-bottom: 2px solid #e0e0e0;
+      border-bottom: 1px solid #e5e5ea;
     }
 
     .bar-container {
@@ -246,9 +296,9 @@
     }
 
     .bar-value {
-      font-size: 16px;
-      font-weight: 700;
-      color: #667eea;
+      font-size: 15px;
+      font-weight: 600;
+      color: #007aff;
       margin-bottom: 8px;
       white-space: nowrap;
       min-height: 20px;
@@ -257,42 +307,40 @@
     .bar {
       width: 100%;
       min-height: 10px;
-      background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
       border-radius: 8px 8px 0 0;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 2px 8px rgba(79, 172, 254, 0.3);
     }
 
     .bar-label {
       margin-top: 12px;
-      font-size: 16px;
-      color: #666;
+      font-size: 15px;
+      color: #8e8e93;
       text-align: center;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .no-data {
       text-align: center;
-      color: #999;
+      color: #8e8e93;
       padding: 60px 20px;
-      font-size: 18px;
+      font-size: 17px;
     }
 
     .loading {
       text-align: center;
-      color: #667eea;
+      color: #007aff;
       padding: 60px 20px;
-      font-size: 18px;
+      font-size: 17px;
     }
 
-    /* お気に入り管理用スタイル */
     .favorite-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 12px 16px;
-      background: #f8f9ff;
-      border-radius: 10px;
+      background: #f2f2f7;
+      border-radius: 12px;
       margin-bottom: 8px;
     }
 
@@ -303,21 +351,21 @@
     .favorite-name {
       font-weight: 600;
       font-size: 17px;
-      color: #333;
+      color: #000;
       margin-bottom: 4px;
     }
 
     .favorite-details {
       font-size: 15px;
-      color: #666;
+      color: #8e8e93;
     }
 
     .delete-btn {
       padding: 8px 16px;
-      background: #dc3545;
+      background: #ff3b30;
       color: white;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
@@ -326,7 +374,7 @@
     }
 
     .delete-btn:active {
-      background: #c82333;
+      opacity: 0.6;
     }
 
     .checkbox-group {
@@ -334,21 +382,26 @@
       align-items: center;
       gap: 10px;
       margin-top: 10px;
-      padding: 12px;
-      background: #f8f9ff;
-      border-radius: 10px;
+      padding: 12px 16px;
+      background: #f2f2f7;
+      border-radius: 12px;
     }
 
     .checkbox-group input[type="checkbox"] {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       cursor: pointer;
+      accent-color: #007aff;
     }
 
     .checkbox-group label {
       margin: 0;
       cursor: pointer;
       flex: 1;
+      text-transform: none;
+      font-size: 17px;
+      font-weight: 400;
+      letter-spacing: 0;
     }
 
     @keyframes slideIn {
@@ -364,8 +417,8 @@
 
     .loader {
       display: inline-block;
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       border: 3px solid #ffffff;
       border-radius: 50%;
       border-top-color: transparent;
@@ -376,30 +429,436 @@
       to { transform: rotate(360deg); }
     }
 
-    /* プレースホルダーのスタイル */
     ::placeholder {
-      color: #999;
-      font-size: 18px;
+      color: #c7c7cc;
+      font-size: 17px;
     }
 
-    /* タッチデバイス用の調整 */
     @media (hover: none) and (pointer: coarse) {
       button:hover {
-        transform: none;
-        box-shadow: none;
+        opacity: 1;
       }
     }
+
+    /* ==================== AIモーダル用スタイル ==================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9998;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .modal-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #000;
+      letter-spacing: -0.3px;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 32px;
+      color: #8e8e93;
+      cursor: pointer;
+      padding: 0;
+      width: auto;
+      line-height: 1;
+      margin: 0;
+    }
+
+    .close-button:active {
+      opacity: 0.6;
+    }
+
+    .image-upload-area {
+      border: 2px dashed #c7c7cc;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #f2f2f7;
+    }
+
+    .image-upload-area:hover {
+      border-color: #007aff;
+      background: #e5f1ff;
+    }
+
+    .image-upload-area.has-image {
+      padding: 10px;
+    }
+
+    #imageInput {
+      display: none;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .upload-text {
+      font-size: 17px;
+      color: #8e8e93;
+      font-weight: 500;
+    }
+
+    .image-preview {
+      max-width: 100%;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .image-preview.visible {
+      display: block;
+    }
+
+    .remove-image-btn {
+      margin-top: 10px;
+      background: #ff3b30;
+      padding: 8px 16px;
+      font-size: 15px;
+    }
+
+    .ai-result {
+      display: none;
+      padding: 20px;
+      background: #d1f2eb;
+      border: 1px solid #a7e9d7;
+      border-radius: 14px;
+      margin-bottom: 20px;
+    }
+
+    .ai-result.visible {
+      display: block;
+      animation: slideIn 0.3s ease;
+    }
+
+    .ai-result-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #0f5132;
+      margin-bottom: 15px;
+    }
+
+    .ai-result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #a7e9d7;
+    }
+
+    .ai-result-item:last-child {
+      border-bottom: none;
+    }
+
+    .ai-result-label {
+      font-weight: 600;
+      color: #000;
+      font-size: 15px;
+    }
+
+    .ai-result-value {
+      font-weight: 600;
+      color: #0f5132;
+      font-size: 15px;
+    }
+
+    .use-ai-result-btn {
+      background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
+      margin-bottom: 0;
+    }
+
+    .divider {
+      text-align: center;
+      margin: 20px 0;
+      position: relative;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      background: #e5e5ea;
+    }
+
+    .divider span {
+      background: white;
+      padding: 0 15px;
+      position: relative;
+      color: #8e8e93;
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+
+    /* ==================== テーマ切り替えボタン ==================== */
+    .theme-toggle-container {
+      display: flex;
+      justify-content: flex-end;
+      flex-shrink: 0;
+    }
+
+    .theme-toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      background: transparent;
+      color: #000;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-bottom: 0;
+    }
+
+    .theme-toggle-btn:active {
+      transform: scale(0.9);
+    }
+
+    .theme-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    /* ダークモード時 */
+    [data-theme="dark"] .theme-toggle-btn {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] .theme-toggle-btn:active {
+      transform: scale(0.9);
+    }
+
+
+
+    /* ==================== ダークモード対応 ==================== */
+    [data-theme="dark"] body {
+      /* ★変更: ライトモードと同じ青いグラデーション */
+      background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
+      background-attachment: fixed;
+    }
+
+    [data-theme="dark"] .card {
+      /* カードは黒いまま */
+      background: #1c1c1e;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    /* 以下は元のまま */
+    [data-theme="dark"] h1,
+    [data-theme="dark"] h2 {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] label {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] input[type="text"],
+    [data-theme="dark"] input[type="number"],
+    [data-theme="dark"] select,
+    [data-theme="dark"] textarea {
+      background: #2c2c2e;
+      border: 1px solid #3a3a3c;
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] input[type="text"]::placeholder,
+    [data-theme="dark"] input[type="number"]::placeholder,
+    [data-theme="dark"] textarea::placeholder {
+      color: #8e8e93;
+    }
+
+    [data-theme="dark"] select {
+      background-color: #2c2c2e;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300d4ff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+    }
+
+    [data-theme="dark"] .checkbox-group {
+      background: #2c2c2e;
+    }
+
+    [data-theme="dark"] .checkbox-group label {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] .message.success {
+      background: #0d3d2f;
+      color: #6ee7b7;
+      border: 1px solid #064e3b;
+    }
+
+    [data-theme="dark"] .message.error {
+      background: #3d0d0d;
+      color: #fca5a5;
+      border: 1px solid #7f1d1d;
+    }
+
+    [data-theme="dark"] .chart {
+      border-bottom: 1px solid #3a3a3c;
+    }
+
+    [data-theme="dark"] .bar-value {
+      color: #00d4ff;
+    }
+
+    [data-theme="dark"] .bar-label {
+      color: #a0a0a5;
+    }
+
+    [data-theme="dark"] .no-data,
+    [data-theme="dark"] .loading {
+      color: #a0a0a5;
+    }
+
+    [data-theme="dark"] .favorite-item {
+      background: #2c2c2e;
+    }
+
+    [data-theme="dark"] .favorite-name {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] .favorite-details {
+      color: #a0a0a5;
+    }
+
+    [data-theme="dark"] .secondary-button {
+      background: #2c2c2e;
+      color: #00d4ff;
+      border: 1px solid #00d4ff;
+    }
+
+    [data-theme="dark"] .modal-content {
+      background: #1c1c1e;
+    }
+
+    [data-theme="dark"] .modal-title {
+      color: #ffffff;
+    }
+
+    [data-theme="dark"] .close-button {
+      color: #a0a0a5;
+    }
+
+    [data-theme="dark"] .image-upload-area {
+      background: #2c2c2e;
+      border: 2px dashed #3a3a3c;
+    }
+
+    [data-theme="dark"] .image-upload-area:hover {
+      border-color: #00d4ff;
+      background: #1a2530;
+    }
+
+    [data-theme="dark"] .upload-text {
+      color: #a0a0a5;
+    }
+
+    [data-theme="dark"] .ai-result {
+      background: #0d3d2f;
+      border: 1px solid #064e3b;
+    }
+
+    [data-theme="dark"] .ai-result-title {
+      color: #6ee7b7;
+    }
+
+    [data-theme="dark"] .ai-result-item {
+      border-bottom: 1px solid #064e3b;
+    }
+
+    [data-theme="dark"] .ai-result-label,
+    [data-theme="dark"] .ai-result-value {
+      color: #6ee7b7;
+    }
+
+    [data-theme="dark"] .divider::before {
+      background: #3a3a3c;
+    }
+
+    [data-theme="dark"] .divider span {
+      background: #1c1c1e;
+      color: #a0a0a5;
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
     <div class="card">
-      <h1>🍽️ カロリー記録</h1>
+      <div class="header-row">
+        <div class="header-spacer"></div>
+        <h1>🍽️ カロリー記録</h1>
+        <div class="theme-toggle-container">
+          <button type="button" class="theme-toggle-btn" id="themeToggle">
+            <span class="theme-icon">🌙</span>
+          </button>
+        </div>
+      </div>
 
       <div id="message" class="message"></div>
 
       <form id="calorieForm">
-        <!-- お気に入りから選択 -->
         <div class="form-group">
           <label for="favoriteSelect">⭐ お気に入りから選択</label>
           <select id="favoriteSelect">
@@ -409,15 +868,22 @@
 
         <div class="form-group">
           <label for="food">食べ物</label>
-          <input
-            type="text"
-            id="food"
-            name="food"
-            placeholder="例: じゃがいも"
-            required
-            autocomplete="off"
-            autocapitalize="off"
-            autocorrect="off">
+          <div class="input-with-ai">
+            <div>
+              <input
+                type="text"
+                id="food"
+                name="food"
+                placeholder="例: じゃがいも"
+                required
+                autocomplete="off"
+                autocapitalize="off"
+                autocorrect="off">
+            </div>
+            <button type="button" class="ai-button" id="aiButton">
+              🤖 AIに聞く
+            </button>
+          </div>
         </div>
 
         <div class="form-group">
@@ -446,7 +912,6 @@
             inputmode="numeric">
         </div>
 
-        <!-- お気に入りに追加チェックボックス -->
         <div class="checkbox-group">
           <input type="checkbox" id="addToFavorite">
           <label for="addToFavorite">この食べ物をお気に入りに追加</label>
@@ -458,15 +923,19 @@
       </form>
     </div>
 
-    <!-- グラフカード -->
     <div class="card">
-      <h2>📈 今月のカロリー推移(kcal)</h2>
+      <h2>📈 カロリー推移(kcal)</h2>
+
+      <div class="form-group" style="margin-bottom: 20px;">
+        <select id="monthSelect">
+        </select>
+      </div>
+
       <div id="chartContainer" class="chart-container">
         <div class="loading">読み込み中...</div>
       </div>
     </div>
 
-    <!-- お気に入り管理カード -->
     <div class="card">
       <h2>⭐ お気に入り管理</h2>
       <div id="favoritesList">
@@ -474,10 +943,65 @@
       </div>
     </div>
 
-    <!-- スプレッドシート確認ボタン（独立したセクション） -->
     <button type="button" class="secondary-button standalone-button" id="viewSheetBtn">
       📊 スプレッドシートを確認
     </button>
+  </div>
+
+  <div class="modal-overlay" id="aiModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">🤖 AI カロリー推定</h2>
+        <button class="close-button" id="closeModal">&times;</button>
+      </div>
+
+      <div class="ai-result" id="aiResult">
+        <div class="ai-result-title">✨ 推定結果</div>
+        <div class="ai-result-item">
+          <span class="ai-result-label">食べ物:</span>
+          <span class="ai-result-value" id="aiFood">-</span>
+        </div>
+        <div class="ai-result-item">
+          <span class="ai-result-label">重さ:</span>
+          <span class="ai-result-value" id="aiWeight">-</span>
+        </div>
+        <div class="ai-result-item">
+          <span class="ai-result-label">カロリー:</span>
+          <span class="ai-result-value" id="aiCalories">-</span>
+        </div>
+        <button type="button" class="use-ai-result-btn" id="useAiResult">
+          この値を使う ✓
+        </button>
+      </div>
+
+      <div class="image-upload-area" id="imageUploadArea">
+        <div id="uploadPrompt">
+          <div class="upload-icon">📷</div>
+          <div class="upload-text">写真をアップロード<br>（タップして選択）</div>
+        </div>
+        <img id="imagePreview" class="image-preview" />
+        <button type="button" class="remove-image-btn" id="removeImageBtn" style="display: none;">
+          画像を削除
+        </button>
+      </div>
+      <input type="file" id="imageInput" accept="image/*" capture="environment" />
+
+      <div class="divider">
+        <span>または</span>
+      </div>
+
+      <div class="form-group">
+        <label for="aiQuery">食事内容を入力</label>
+        <textarea
+          id="aiQuery"
+          placeholder="例: 唐揚げ5個食べました&#10;例: コンビニのおにぎり1個"
+        ></textarea>
+      </div>
+
+      <button type="button" id="estimateButton">
+        <span id="estimateBtnText">🔍 カロリーを推定</span>
+      </button>
+    </div>
   </div>
 
   <script>
@@ -493,8 +1017,130 @@
     const viewSheetBtn = document.getElementById('viewSheetBtn');
     const chartContainer = document.getElementById('chartContainer');
     const favoritesList = document.getElementById('favoritesList');
+    const monthSelect = document.getElementById('monthSelect');
 
-    // お気に入り選択時の処理
+    const aiButton = document.getElementById('aiButton');
+    const aiModal = document.getElementById('aiModal');
+    const closeModal = document.getElementById('closeModal');
+    const imageUploadArea = document.getElementById('imageUploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const imagePreview = document.getElementById('imagePreview');
+    const uploadPrompt = document.getElementById('uploadPrompt');
+    const removeImageBtn = document.getElementById('removeImageBtn');
+    const aiQuery = document.getElementById('aiQuery');
+    const estimateButton = document.getElementById('estimateButton');
+    const estimateBtnText = document.getElementById('estimateBtnText');
+    const aiResult = document.getElementById('aiResult');
+    const aiFood = document.getElementById('aiFood');
+    const aiWeight = document.getElementById('aiWeight');
+    const aiCalories = document.getElementById('aiCalories');
+    const useAiResult = document.getElementById('useAiResult');
+
+    let currentImageBase64 = null;
+    let currentAiResult = null;
+
+    aiButton.addEventListener('click', () => {
+      aiModal.classList.add('active');
+      aiQuery.value = '';
+      currentImageBase64 = null;
+      imagePreview.classList.remove('visible');
+      uploadPrompt.style.display = 'block';
+      removeImageBtn.style.display = 'none';
+      aiResult.classList.remove('visible');
+      currentAiResult = null;
+    });
+
+    closeModal.addEventListener('click', () => {
+      aiModal.classList.remove('active');
+    });
+
+    aiModal.addEventListener('click', (e) => {
+      if (e.target === aiModal) {
+        aiModal.classList.remove('active');
+      }
+    });
+
+    imageUploadArea.addEventListener('click', (e) => {
+      if (e.target !== removeImageBtn) {
+        imageInput.click();
+      }
+    });
+
+    imageInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          currentImageBase64 = event.target.result;
+          imagePreview.src = currentImageBase64;
+          imagePreview.classList.add('visible');
+          uploadPrompt.style.display = 'none';
+          removeImageBtn.style.display = 'block';
+          imageUploadArea.classList.add('has-image');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    removeImageBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentImageBase64 = null;
+      imagePreview.classList.remove('visible');
+      uploadPrompt.style.display = 'block';
+      removeImageBtn.style.display = 'none';
+      imageUploadArea.classList.remove('has-image');
+      imageInput.value = '';
+    });
+
+    estimateButton.addEventListener('click', () => {
+      const query = aiQuery.value.trim();
+
+      if (!query && !currentImageBase64) {
+        showMessage('テキストまたは画像を入力してください', 'error');
+        return;
+      }
+
+      estimateButton.disabled = true;
+      estimateBtnText.innerHTML = '<span class="loader"></span> 推定中...';
+      aiResult.classList.remove('visible');
+
+      google.script.run
+        .withSuccessHandler(onAiEstimateSuccess)
+        .withFailureHandler(onAiEstimateFailure)
+        .estimateCaloriesWithAI(query, currentImageBase64);
+    });
+
+    function onAiEstimateSuccess(result) {
+      estimateButton.disabled = false;
+      estimateBtnText.textContent = '🔍 カロリーを推定';
+
+      if (result.success) {
+        currentAiResult = result.data;
+        aiFood.textContent = result.data.food;
+        aiWeight.textContent = result.data.weight + ' g';
+        aiCalories.textContent = result.data.calories + ' kcal';
+        aiResult.classList.add('visible');
+      } else {
+        showMessage(result.message, 'error');
+      }
+    }
+
+    function onAiEstimateFailure(error) {
+      estimateButton.disabled = false;
+      estimateBtnText.textContent = '🔍 カロリーを推定';
+      showMessage('エラー: ' + error.message, 'error');
+    }
+
+    useAiResult.addEventListener('click', () => {
+      if (currentAiResult) {
+        foodInput.value = currentAiResult.food;
+        weightInput.value = currentAiResult.weight;
+        caloriesInput.value = currentAiResult.calories;
+        aiModal.classList.remove('active');
+        showMessage('フォームに入力しました！', 'success');
+      }
+    });
+
     favoriteSelect.addEventListener('change', (e) => {
       const selectedValue = e.target.value;
       if (selectedValue) {
@@ -505,7 +1151,6 @@
       }
     });
 
-    // フォーム送信
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -519,12 +1164,10 @@
         return;
       }
 
-      // ボタンを無効化
       submitBtn.disabled = true;
       btnText.innerHTML = '<span class="loader"></span>';
 
       try {
-        // GASの関数を呼び出し
         google.script.run
           .withSuccessHandler(onSuccess)
           .withFailureHandler(onFailure)
@@ -534,7 +1177,6 @@
       }
     });
 
-    // スプレッドシートを開く
     viewSheetBtn.addEventListener('click', () => {
       google.script.run
         .withSuccessHandler((result) => {
@@ -556,13 +1198,11 @@
 
       if (result.success) {
         showMessage(result.message, 'success');
-        // フォームをリセット
         form.reset();
         if (window.innerWidth > 768) {
           foodInput.focus();
         }
-        // グラフとお気に入りを更新
-        loadChart();
+        loadChart(monthSelect.value);
         loadFavorites();
       } else {
         showMessage(result.message, 'error');
@@ -585,8 +1225,7 @@
       }, 3000);
     }
 
-    // グラフを読み込む
-    function loadChart() {
+    function loadChart(targetYearMonth) {
       chartContainer.innerHTML = '<div class="loading">読み込み中...</div>';
 
       google.script.run
@@ -595,10 +1234,33 @@
           console.error('Chart load error:', error);
           chartContainer.innerHTML = '<div class="no-data">グラフの読み込みに失敗しました</div>';
         })
-        .getMonthlyCalories();
+        .getMonthlyCalories(targetYearMonth);
     }
 
-    // グラフを表示
+    function loadAvailableMonths() {
+      google.script.run
+        .withSuccessHandler((result) => {
+          if (result.success && result.data.length > 0) {
+            monthSelect.innerHTML = '';
+            result.data.forEach(month => {
+              const option = document.createElement('option');
+              option.value = month.value;
+              option.textContent = month.label;
+              monthSelect.appendChild(option);
+            });
+            
+            loadChart(monthSelect.value);
+          } else {
+            monthSelect.innerHTML = '<option value="">データなし</option>';
+          }
+        })
+        .withFailureHandler((error) => {
+          console.error('Available months load error:', error);
+          monthSelect.innerHTML = '<option value="">エラー</option>';
+        })
+        .getAvailableMonths();
+    }
+
     function displayChart(result) {
       if (!result.success || !result.data || result.data.length === 0) {
         chartContainer.innerHTML = '<div class="no-data">まだデータがありません</div>';
@@ -613,29 +1275,38 @@
         return;
       }
 
-      let chartHTML = '<div class="chart-wrapper"><div class="chart">';
+      // DocumentFragmentで一括構築
+      const wrapper = document.createElement('div');
+      wrapper.className = 'chart-wrapper';
+      
+      const chart = document.createElement('div');
+      chart.className = 'chart';
 
-      data.forEach(item => {
-        const date = new Date(item.date);
-        const day = date.getDate();
+      for (let i = 0; i < data.length; i++) {
+        const item = data[i];
+        const day = parseInt(item.date.split('-')[2], 10); // "01" → 1, "15" → 15
         const heightPx = Math.max(20, (item.calories / maxCalories) * 160);
 
-        chartHTML += `
-          <div class="bar-container">
-            <div class="bar-wrapper">
-              <div class="bar-value">${item.calories}</div>
-              <div class="bar" style="height: ${heightPx}px;"></div>
-            </div>
-            <div class="bar-label">${day}日</div>
+        const container = document.createElement('div');
+        container.className = 'bar-container';
+        container.innerHTML = `
+          <div class="bar-wrapper">
+            <div class="bar-value">${item.calories}</div>
+            <div class="bar" style="height:${heightPx}px"></div>
           </div>
+          <div class="bar-label">${day}日</div>
         `;
-      });
+        
+        chart.appendChild(container);
+      }
 
-      chartHTML += '</div></div>';
-      chartContainer.innerHTML = chartHTML;
+      wrapper.appendChild(chart);
+      
+      // 一度だけDOM更新
+      chartContainer.innerHTML = '';
+      chartContainer.appendChild(wrapper);
     }
 
-    // お気に入りを読み込む
     function loadFavorites() {
       favoritesList.innerHTML = '<div class="loading">読み込み中...</div>';
 
@@ -648,9 +1319,7 @@
         .getFavorites();
     }
 
-    // お気に入りを表示
     function displayFavorites(result) {
-      // ドロップダウンを更新
       favoriteSelect.innerHTML = '<option value="">-- 選択してください --</option>';
 
       if (!result.success || !result.data || result.data.length === 0) {
@@ -660,7 +1329,6 @@
 
       const favorites = result.data;
 
-      // ドロップダウンに追加
       favorites.forEach(fav => {
         const option = document.createElement('option');
         option.value = `${fav.food}|${fav.weight}|${fav.calories}`;
@@ -668,7 +1336,6 @@
         favoriteSelect.appendChild(option);
       });
 
-      // お気に入りリストを表示
       let listHTML = '';
       favorites.forEach((fav, index) => {
         listHTML += `
@@ -685,7 +1352,6 @@
       favoritesList.innerHTML = listHTML;
     }
 
-    // お気に入りを削除
     function deleteFavorite(index) {
       if (!confirm('このお気に入りを削除しますか?')) {
         return;
@@ -706,15 +1372,45 @@
         .removeFavorite(index);
     }
 
-    // ページ読み込み時
+    monthSelect.addEventListener('change', () => {
+      loadChart(monthSelect.value);
+    });
+
+
+    // ==================== テーマ切り替え機能 ====================
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = themeToggle.querySelector('.theme-icon');
+
+    // 保存されたテーマを読み込み
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeButton(savedTheme);
+
+    // テーマ切り替えボタンのクリックイベント
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeButton(newTheme);
+    });
+
+    // ボタンの表示を更新
+    function updateThemeButton(theme) {
+      if (theme === 'dark') {
+        themeIcon.textContent = '☀️';
+      } else {
+        themeIcon.textContent = '🌙';
+      }
+    }
+
     window.addEventListener('load', () => {
-      // デスクトップのみ自動フォーカス
       if (window.innerWidth > 768) {
         foodInput.focus();
       }
 
-      // グラフとお気に入りを読み込む
-      loadChart();
+      loadAvailableMonths();
       loadFavorites();
     });
   </script>
